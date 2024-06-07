@@ -8,20 +8,18 @@ function Contador() {
   useEffect(() => {
     const obtenerContador = async () => {
       const docRef = doc(db, 'contador', 'valor');
-
-      // Crear el documento si no existe
+    
       const docSnap = await getDoc(docRef);
       if (!docSnap.exists()) {
         await setDoc(docRef, { valor: 0 });
       }
 
-      // Escuchar cambios en tiempo real
       const unsubscribe = onSnapshot(docRef, (doc) => {
         console.log("onSnapshot: Contador actualizado:", doc.data()?.valor);
         setContador(doc.data()?.valor);
       });
 
-      // Limpiar el listener al desmontar el componente
+      
       return () => unsubscribe(); 
     };
 
@@ -29,12 +27,12 @@ function Contador() {
   }, []);
 
   const incrementarContador = async () => {
-    console.log("IncrementarContador: Iniciando incremento...");
+    console.log("Valor del contador: Iniciando el aumento de valor...");
     const docRef = doc(db, 'contador', 'valor');
     const docSnap = await getDoc(docRef);
 
     const nuevoValor = (docSnap.data()?.valor || 0) + 1;
-    console.log("IncrementarContador: Nuevo valor:", nuevoValor);
+    console.log("Valor del contador: Nuevo valor:", nuevoValor);
 
     await setDoc(docRef, { valor: nuevoValor });
     setContador(nuevoValor);
@@ -43,7 +41,7 @@ function Contador() {
   return (
     <div>
       <h1>Contador: {contador}</h1>
-      <button onClick={incrementarContador}>Incrementar</button>
+      <button onClick={incrementarContador}>Aumentar Valor</button>
     </div>
   );
 }
